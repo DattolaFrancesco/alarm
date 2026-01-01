@@ -1,7 +1,11 @@
+const main = document.getElementsByTagName("MAIN")[0];
 const clock = document.querySelector("#clock h1");
 const header = document.getElementsByTagName("header")[0];
 const h4 = document.querySelectorAll("h4");
-const newAlarm = document.getElementById("newAlarm");
+const newAlarm = document.querySelector(".newAlarm");
+const addBtn = document.getElementById("addAlarmBtn");
+const alarms = document.getElementById("alarms");
+const arrow = document.getElementById("arrow");
 // clock function
 const timeCheck = () => {
   const now = new Date();
@@ -19,8 +23,16 @@ header.addEventListener("click", (e) => {
   if (e.target.tagName === "H4") {
     h4.forEach((e) => e.classList.remove("sectionSelected"));
     e.target.classList.add("sectionSelected");
-    if (e.target.innerText === "ALARMS") clock.classList.add("hide");
-    if (e.target.innerText === "CLOCK") clock.classList.remove("hide");
+    if (e.target.innerText === "ALARMS") {
+      clock.classList.add("hide");
+      addBtn.classList.remove("hide");
+      alarms.classList.remove("hide");
+    }
+    if (e.target.innerText === "CLOCK") {
+      clock.classList.remove("hide");
+      addBtn.classList.add("hide");
+      alarms.classList.add("hide");
+    }
   }
 });
 
@@ -53,5 +65,81 @@ const creationHour = () => {
   div.append(selectHour, selectMinutes);
   div2.appendChild(btn);
   newAlarm.append(div, div2);
+  btn.addEventListener("click", () => {
+    const selectedHour = selectHour.value.toString().padStart(2, "0");
+    const selectedMinute = selectMinutes.value.toString().padStart(2, "0");
+    //  creation of the alarm in the main section
+    const divAlarm = document.createElement("div");
+    divAlarm.classList.add("alarm");
+    const divHour = document.createElement("div");
+    divHour.classList.add("hourMargin");
+    const h1 = document.createElement("h1");
+    h1.classList.add("white");
+    h1.innerText = selectedHour + ":" + selectedMinute;
+    // div separatorio
+    const divSeparate = document.createElement("div");
+    divSeparate.classList.add("separate");
+    const divSwitch = document.createElement("div");
+    divSwitch.classList.add("switch");
+    const divSwitchChanger = document.createElement("div");
+    divSwitchChanger.id = "onOff";
+    divSwitchChanger.classList.add("greenSwitch");
+    const minus = document.createElement("i");
+    minus.classList.add("fas", "fa-minus", "white");
+    // minus listener
+    minus.addEventListener("click", () => {
+      divAlarm.classList.add("red");
+      divHour.classList.add("hide");
+      divSeparate.classList.add("hide");
+      const divH3 = document.createElement("div");
+      divH3.classList.add("hourMargin");
+      const h3 = document.createElement("h3");
+      h3.innerText = "DO U WANT TO DELETE THIS ALARM?";
+      const divAnswer = document.createElement("div");
+      divAnswer.classList.add("separate");
+      const yes = document.createElement("i");
+      yes.classList.add("hourMargin");
+      yes.classList.add("fas", "fa-check");
+      const no = document.createElement("i");
+      no.classList.add("fas", "fa-times");
+      no.classList.add("hourMargin");
+      divH3.append(h3);
+      divAnswer.append(yes, no);
+      divAlarm.append(divH3, divAnswer);
+      //   listener yes
+      yes.addEventListener("click", () => {
+        divAlarm.remove();
+      });
+      //   listener no
+      no.addEventListener("click", () => {
+        divH3.classList.add("hide");
+        divAnswer.classList.add("hide");
+        divAlarm.classList.remove("red");
+        divHour.classList.remove("hide");
+        divSeparate.classList.remove("hide");
+      });
+    });
+    // append
+    divSeparate.append(divSwitch, minus);
+    divSwitch.appendChild(divSwitchChanger);
+    divHour.appendChild(h1);
+    divAlarm.append(divHour, divSeparate);
+    alarms.appendChild(divAlarm);
+    // listener for the alarms creation
+    divSwitch.addEventListener("click", () => {
+      divSwitchChanger.classList.toggle("greenSwitch");
+      divSwitchChanger.classList.toggle("redSwitch");
+      divSwitchChanger.classList.toggle("switchRight");
+      divSwitch.classList.toggle("switchBcg");
+      h1.classList.toggle("lightergrey");
+    });
+    newAlarm.classList.toggle("hideMenu");
+  });
 };
 creationHour();
+
+addBtn.addEventListener("click", () => {
+  newAlarm.classList.toggle("hideMenu");
+  arrow.classList.toggle("fa-chevron-down");
+  arrow.classList.toggle("fa-chevron-up");
+});
