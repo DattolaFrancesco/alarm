@@ -1,0 +1,92 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  height: 100vh;
+}
+/* Header*/
+header {
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 10%;
+}
+header h4 {
+  transition: 0.5s ease;
+}
+header a {
+  color: white;
+  text-decoration: none;
+}
+.sectionSelected {
+  font-size: 200%;
+}
+/* main*/
+main {
+  background-color: rgb(202, 154, 154);
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#clock h1 {
+  font-size: 2000%;
+}
+/* alarms*/
+#newAlarm {
+  position: absolute;
+  background-color: rgb(204, 203, 203, 0.5);
+  /* transform: translate(-50%, -50%); */
+  left: 2%;
+  top: 10%;
+  height: 20%;
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: start;
+}
+/* style for the new alarms input*/
+.newAlarms {
+  width: 20%;
+  height: 40%;
+}
+.setAlarm {
+  width: 100%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Add {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btnAdd {
+  width: 30%;
+  padding: 3%;
+}
+#alarms {
+  background-color: blueviolet;
+  height: 80%;
+  width: 80%;
+}
+.alarm {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 15%;
+  border: 2px solid black;
+  font-size: 200%;
+}
+
+/* class for hiding */
+.hide {
+  display: none;
+}
