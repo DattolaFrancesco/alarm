@@ -39,6 +39,10 @@ main {
   justify-content: center;
   align-items: center;
 }
+/* main for the question */
+.qMain {
+  height: 100%;
+}
 #clock h1 {
   font-size: 2000%;
 }

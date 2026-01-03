@@ -7,7 +7,8 @@ const addBtn = document.getElementById("addAlarmBtn");
 const alarms = document.getElementById("alarms");
 const arrow = document.getElementById("arrow");
 let alarmsArray = [];
-
+let resolved = true;
+let triggered = false;
 // clock function
 const timeCheck = () => {
   const now = new Date();
@@ -15,14 +16,40 @@ const timeCheck = () => {
   const minutes = now.getMinutes().toString().padStart(2, "0");
   const seconds = now.getSeconds().toString().padStart(2, "0");
   clock.innerText = hour + ":" + minutes + ":" + seconds;
-  // alarmsCheck();
+  alarmsCheck(hour, minutes, seconds);
   requestAnimationFrame(timeCheck);
 };
 timeCheck();
 
-function alarmsCheck() {
+// function for the triggered alarm
+
+function trigger() {
+  header.classList.add("hide");
+  clock.classList.add("hide");
+  triggered = false;
+  main.classList.add("qMain");
+  // quiz creation
+  const btn = document.createElement("button");
+  btn.innerText = "close";
+  main.appendChild(btn);
+  btn.addEventListener("click", () => {
+    header.classList.remove("hide");
+    clock.classList.remove("hide");
+    main.classList.remove("qMain");
+    resolved = true;
+    btn.remove();
+  });
+}
+
+// function for check if the alarm its triggered or not
+function alarmsCheck(hour, minutes, seconds) {
+  if (!resolved) return;
   for (let i = 0; i < alarmsArray.length; i++) {
-    if (alarmsArray[i].innerText + ":" + "00" === hour + ":" + minutes + ":" + seconds) console.log("ciao");
+    if (alarmsArray[i].innerText + ":" + "00" === hour + ":" + minutes + ":" + seconds) {
+      resolved = false;
+      trigger();
+      return;
+    }
   }
 }
 
