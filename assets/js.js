@@ -6,6 +6,8 @@ const newAlarm = document.querySelector(".newAlarm");
 const addBtn = document.getElementById("addAlarmBtn");
 const alarms = document.getElementById("alarms");
 const arrow = document.getElementById("arrow");
+let alarmsArray = [];
+
 // clock function
 const timeCheck = () => {
   const now = new Date();
@@ -13,9 +15,16 @@ const timeCheck = () => {
   const minutes = now.getMinutes().toString().padStart(2, "0");
   const seconds = now.getSeconds().toString().padStart(2, "0");
   clock.innerText = hour + ":" + minutes + ":" + seconds;
+  // alarmsCheck();
   requestAnimationFrame(timeCheck);
 };
 timeCheck();
+
+function alarmsCheck() {
+  for (let i = 0; i < alarmsArray.length; i++) {
+    if (alarmsArray[i].innerText + ":" + "00" === hour + ":" + minutes + ":" + seconds) console.log("ciao");
+  }
+}
 
 // section changer with a listener
 
@@ -73,9 +82,10 @@ const creationHour = () => {
     divAlarm.classList.add("alarm");
     const divHour = document.createElement("div");
     divHour.classList.add("hourMargin");
-    const h1 = document.createElement("h1");
+    const h1 = document.createElement("h1"); // alarm h1
     h1.classList.add("white");
     h1.innerText = selectedHour + ":" + selectedMinute;
+    alarmsArray.push(h1);
     // div separatorio
     const divSeparate = document.createElement("div");
     divSeparate.classList.add("separate");
@@ -126,12 +136,24 @@ const creationHour = () => {
     divAlarm.append(divHour, divSeparate);
     alarms.appendChild(divAlarm);
     // listener for the alarms creation
-    divSwitch.addEventListener("click", () => {
+    divSwitch.addEventListener("click", (e) => {
       divSwitchChanger.classList.toggle("greenSwitch");
-      divSwitchChanger.classList.toggle("redSwitch");
+      divSwitchChanger.classList.toggle("greySwitch");
       divSwitchChanger.classList.toggle("switchRight");
       divSwitch.classList.toggle("switchBcg");
       h1.classList.toggle("lightergrey");
+      if (e.currentTarget.classList.contains("switchBcg")) {
+        alarmsArray.forEach((element) => {
+          if (element.classList.contains("lightergrey")) {
+            const index = alarmsArray.indexOf(element);
+            alarmsArray.splice(index, 1);
+          }
+        });
+      } else {
+        alarmsArray.push(h1);
+        console.log(alarmsArray);
+      }
+      console.log(alarmsArray);
     });
     newAlarm.classList.toggle("hideMenu");
   });

@@ -139,7 +139,7 @@ main {
   transform: translateX(0);
   transition: 0.5s ease;
 }
-.redSwitch {
+.greySwitch {
   background-color: white;
   width: 55%;
   border-radius: 20px;
