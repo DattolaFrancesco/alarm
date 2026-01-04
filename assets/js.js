@@ -199,6 +199,7 @@ header.addEventListener("click", (e) => {
       clock.classList.remove("hide");
       addBtn.classList.add("hide");
       alarms.classList.add("hide");
+      newAlarm.classList.add("hideMenu");
     }
   }
 });
@@ -241,19 +242,19 @@ const creationHour = () => {
     const divHour = document.createElement("div");
     divHour.classList.add("hourMargin");
     const h1 = document.createElement("h1"); // alarm h1
-    h1.classList.add("white");
+    h1.classList.add("white", "noPointer");
     h1.innerText = selectedHour + ":" + selectedMinute;
     alarmsArray.push(h1);
     // div separatorio
     const divSeparate = document.createElement("div");
     divSeparate.classList.add("separate");
     const divSwitch = document.createElement("div");
-    divSwitch.classList.add("switch");
+    divSwitch.classList.add("switch", "pointer");
     const divSwitchChanger = document.createElement("div");
     divSwitchChanger.id = "onOff";
     divSwitchChanger.classList.add("greenSwitch");
     const minus = document.createElement("i");
-    minus.classList.add("fas", "fa-minus", "white");
+    minus.classList.add("fas", "fa-minus", "white", "pointer");
     // minus listener
     minus.addEventListener("click", () => {
       divAlarm.classList.add("red");
@@ -267,9 +268,9 @@ const creationHour = () => {
       divAnswer.classList.add("separate");
       const yes = document.createElement("i");
       yes.classList.add("hourMargin");
-      yes.classList.add("fas", "fa-check");
+      yes.classList.add("fas", "fa-check", "pointer");
       const no = document.createElement("i");
-      no.classList.add("fas", "fa-times");
+      no.classList.add("fas", "fa-times", "pointer");
       no.classList.add("hourMargin");
       divH3.append(h3);
       divAnswer.append(yes, no);

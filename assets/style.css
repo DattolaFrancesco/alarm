@@ -198,3 +198,10 @@ main {
 .hideMenu {
   height: 0;
 }
+/* pointer */
+.noPointer {
+  pointer-events: none;
+}
+.pointer {
+  cursor: pointer;
+}
