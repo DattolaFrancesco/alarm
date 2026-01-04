@@ -1,5 +1,7 @@
 const main = document.getElementsByTagName("MAIN")[0];
+const container = document.getElementById("container");
 const clock = document.querySelector("#clock h1");
+const clockBtn = document.querySelector("#clockBtn");
 const header = document.getElementsByTagName("header")[0];
 const h4 = document.querySelectorAll("h4");
 const newAlarm = document.querySelector(".newAlarm");
@@ -7,8 +9,56 @@ const addBtn = document.getElementById("addAlarmBtn");
 const alarms = document.getElementById("alarms");
 const arrow = document.getElementById("arrow");
 let alarmsArray = [];
+let questionsTaken = [];
 let resolved = true;
-let triggered = false;
+let counter = 0;
+// obj for the questions
+
+const quizMath = [
+  { question: "Quanto fa 2 + 2?", answers: [3, 4], rightAnswer: 1 },
+  { question: "Quanto fa 5 - 3?", answers: [2, 3], rightAnswer: 0 },
+  { question: "Quanto fa 4 x 2?", answers: [6, 8], rightAnswer: 1 },
+  { question: "Quanto fa 10 ÷ 2?", answers: [4, 5], rightAnswer: 1 },
+  { question: "Quanto fa 7 + 1?", answers: [8, 9], rightAnswer: 0 },
+  { question: "Quanto fa 9 - 4?", answers: [6, 5], rightAnswer: 1 },
+  { question: "Quanto fa 3 x 3?", answers: [9, 6], rightAnswer: 0 },
+  { question: "Quanto fa 8 ÷ 4?", answers: [2, 4], rightAnswer: 0 },
+  { question: "Quanto fa 6 + 3?", answers: [10, 9], rightAnswer: 1 },
+  { question: "Quanto fa 12 - 7?", answers: [5, 6], rightAnswer: 0 },
+
+  { question: "Quanto fa 5 + 5?", answers: [10, 11], rightAnswer: 0 },
+  { question: "Quanto fa 14 - 6?", answers: [8, 9], rightAnswer: 0 },
+  { question: "Quanto fa 2 x 6?", answers: [10, 12], rightAnswer: 1 },
+  { question: "Quanto fa 16 ÷ 4?", answers: [3, 4], rightAnswer: 1 },
+  { question: "Quanto fa 9 + 1?", answers: [10, 11], rightAnswer: 0 },
+  { question: "Quanto fa 11 - 5?", answers: [6, 5], rightAnswer: 0 },
+  { question: "Quanto fa 4 x 3?", answers: [12, 10], rightAnswer: 0 },
+  { question: "Quanto fa 18 ÷ 3?", answers: [5, 6], rightAnswer: 1 },
+  { question: "Quanto fa 8 + 7?", answers: [14, 15], rightAnswer: 1 },
+  { question: "Quanto fa 15 - 9?", answers: [6, 7], rightAnswer: 0 },
+
+  { question: "Quanto fa 6 x 2?", answers: [12, 14], rightAnswer: 0 },
+  { question: "Quanto fa 20 ÷ 5?", answers: [4, 5], rightAnswer: 0 },
+  { question: "Quanto fa 13 + 2?", answers: [14, 15], rightAnswer: 1 },
+  { question: "Quanto fa 17 - 10?", answers: [6, 7], rightAnswer: 1 },
+  { question: "Quanto fa 5 x 4?", answers: [20, 25], rightAnswer: 0 },
+  { question: "Quanto fa 24 ÷ 6?", answers: [4, 5], rightAnswer: 0 },
+  { question: "Quanto fa 10 + 8?", answers: [18, 17], rightAnswer: 0 },
+  { question: "Quanto fa 16 - 8?", answers: [7, 8], rightAnswer: 1 },
+  { question: "Quanto fa 7 x 2?", answers: [14, 16], rightAnswer: 0 },
+  { question: "Quanto fa 21 ÷ 7?", answers: [3, 4], rightAnswer: 0 },
+
+  { question: "Quanto fa 4 + 9?", answers: [12, 13], rightAnswer: 1 },
+  { question: "Quanto fa 18 - 9?", answers: [9, 8], rightAnswer: 0 },
+  { question: "Quanto fa 3 x 5?", answers: [15, 18], rightAnswer: 0 },
+  { question: "Quanto fa 30 ÷ 5?", answers: [5, 6], rightAnswer: 1 },
+  { question: "Quanto fa 11 + 4?", answers: [15, 16], rightAnswer: 0 },
+  { question: "Quanto fa 20 - 11?", answers: [9, 10], rightAnswer: 0 },
+  { question: "Quanto fa 8 x 2?", answers: [16, 18], rightAnswer: 0 },
+  { question: "Quanto fa 36 ÷ 6?", answers: [6, 7], rightAnswer: 0 },
+  { question: "Quanto fa 14 + 5?", answers: [18, 19], rightAnswer: 1 },
+  { question: "Quanto fa 19 - 4?", answers: [15, 14], rightAnswer: 0 },
+];
 // clock function
 const timeCheck = () => {
   const now = new Date();
@@ -26,19 +76,11 @@ timeCheck();
 function trigger() {
   header.classList.add("hide");
   clock.classList.add("hide");
-  triggered = false;
+  alarms.classList.add("hide");
+  addBtn.classList.remove("hide");
   main.classList.add("qMain");
   // quiz creation
-  const btn = document.createElement("button");
-  btn.innerText = "close";
-  main.appendChild(btn);
-  btn.addEventListener("click", () => {
-    header.classList.remove("hide");
-    clock.classList.remove("hide");
-    main.classList.remove("qMain");
-    resolved = true;
-    btn.remove();
-  });
+  quizCreations();
 }
 
 // function for check if the alarm its triggered or not
@@ -52,7 +94,96 @@ function alarmsCheck(hour, minutes, seconds) {
     }
   }
 }
+// function for the quiz creation
 
+function quizCreations() {
+  // question insert
+  const index = randomQuiz(quizMath.length);
+  // container
+  const divContainer = document.createElement("div");
+  divContainer.id = "questionContainer";
+  // question
+  const divQuestion = document.createElement("div");
+  divQuestion.id = "question";
+  const h1 = document.createElement("h1");
+  h1.innerText = quizMath[index].question;
+  //answers
+  const divAnswers = document.createElement("div");
+  divAnswers.id = "answers";
+  // answer 1
+  const divAnswer1 = document.createElement("div");
+  divAnswer1.classList.add("answer");
+  const h2Answer1 = document.createElement("h2");
+  h2Answer1.innerText = quizMath[index].answers[0];
+  // append h2 on a1
+  divAnswer1.appendChild(h2Answer1);
+  // answer 2
+  const divAnswer2 = document.createElement("div");
+  divAnswer2.classList.add("answer");
+  const h2Answer2 = document.createElement("h2");
+  h2Answer2.innerText = quizMath[index].answers[1];
+  // append h2 on a2
+  divAnswer2.appendChild(h2Answer2);
+  // counter
+  const divCounter = document.createElement("div");
+  divCounter.id = "counter";
+  const h2Counter = document.createElement("h2");
+  h2Counter.innerText = `${counter}/3`;
+  // append h2counter
+  divCounter.appendChild(h2Counter);
+  //apppend answers
+  divAnswers.append(divAnswer1, divAnswer2);
+  //append question
+  divQuestion.appendChild(h1);
+  // append
+  divContainer.append(divQuestion, divAnswers, divCounter);
+  main.appendChild(divContainer);
+  // answers listeners
+  divAnswer1.addEventListener("click", (e) => {
+    if (h2Answer1.innerText == quizMath[index].answers[quizMath[index].rightAnswer]) {
+      divAnswer1.classList.add("right");
+      counter++;
+      setTimeout(() => {
+        divContainer.remove();
+        quizCreations();
+      }, 500);
+    } else {
+      divAnswer1.classList.add("wrong");
+      setTimeout(() => {
+        divContainer.remove();
+        quizCreations();
+      }, 500);
+    }
+  });
+  divAnswer2.addEventListener("click", (e) => {
+    if (h2Answer2.innerText == quizMath[index].answers[quizMath[index].rightAnswer]) {
+      divAnswer2.classList.add("right");
+      counter++;
+      setTimeout(() => {
+        divContainer.remove();
+        quizCreations();
+      }, 500);
+    } else {
+      divAnswer2.classList.add("wrong");
+      setTimeout(() => {
+        divContainer.remove();
+        quizCreations();
+      }, 500);
+    }
+  });
+  if (counter === 3) {
+    header.classList.remove("hide");
+    clock.classList.remove("hide");
+    main.classList.remove("qMain");
+    h4.forEach((e) => e.classList.remove("sectionSelected"));
+    clockBtn.classList.add("sectionSelected");
+    addBtn.classList.add("hide");
+    divContainer.remove();
+    resolved = true;
+    counter = 0;
+    return;
+  }
+}
 // section changer with a listener
 
 header.addEventListener("click", (e) => {
@@ -192,3 +323,12 @@ addBtn.addEventListener("click", () => {
   arrow.classList.toggle("fa-chevron-down");
   arrow.classList.toggle("fa-chevron-up");
 });
+// random question
+function randomQuiz(n) {
+  let num = Math.floor(Math.random() * n);
+  while (questionsTaken.some((n) => n === num)) {
+    num = Math.floor(Math.random() * n);
+  }
+  questionsTaken.push(num);
+  return num;
+}

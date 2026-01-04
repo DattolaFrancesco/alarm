@@ -46,6 +46,36 @@ main {
 #clock h1 {
   font-size: 2000%;
 }
+/* question container */
+#questionContainer {
+  background-color: rgb(167, 235, 235);
+  width: 90%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+#question {
+  font-size: 200%;
+}
+#answers {
+  font-size: 200%;
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-block: 12%;
+}
+.answer {
+  border: 2px solid black;
+  width: 30%;
+  border-radius: 25px;
+  text-align: center;
+}
+#counter {
+  font-size: 120%;
+}
 /* alarms*/
 .newAlarm {
   position: absolute;
@@ -122,6 +152,12 @@ main {
   background-color: rgb(173, 68, 42);
   border: none;
   transition: 1s ease;
+}
+.right {
+  background-color: green;
+}
+.wrong {
+  background-color: red;
 }
 /* alarm switch*/
 .switch {
