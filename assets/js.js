@@ -263,7 +263,8 @@ const creationHour = () => {
       const divH3 = document.createElement("div");
       divH3.classList.add("hourMargin");
       const h3 = document.createElement("h3");
-      h3.innerText = "DO U WANT TO DELETE THIS ALARM?";
+      h3.innerText = "DELETE THIS ALARM?";
+      h3.classList.add("deleteAlarm");
       const divAnswer = document.createElement("div");
       divAnswer.classList.add("separate");
       const yes = document.createElement("i");

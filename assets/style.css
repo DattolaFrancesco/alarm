@@ -205,3 +205,27 @@ main {
 .pointer {
   cursor: pointer;
 }
+.deleteAlarm {
+  font-size: 150%;
+}
+
+@media screen and (max-width: 576px) {
+  #clock h1 {
+    font-size: 900%;
+    text-align: center;
+  }
+  .newAlarm {
+    width: 35%;
+    left: 0;
+  }
+  .separate {
+    width: 30%;
+    margin-right: 2%;
+  }
+  .switch {
+    width: 50%;
+  }
+  .deleteAlarm {
+    font-size: 70%;
+  }
+}
